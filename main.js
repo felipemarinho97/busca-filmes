@@ -11,9 +11,26 @@ function createImg(src) {
   return img;
 }
 
+function createLink(name, href) {
+  const a = document.createElement("a");
+  a.href = href;
+  a.innerText = name;
+  return a;
+}
+
+function createBtnLink(name, href) {
+  const link = createLink(name, href);
+  link.classList.add("btn", "btn-sm", "btn-info");
+  link.target = "_blank";
+  return link;
+}
+
+// https://www.themoviedb.org/movie/
+
 function renderMovie(movie) {
   const filme = document.createElement("div");
   filme.id = movie.id;
+  filme.className = "movie_container";
 
   const title = document.createElement("h1");
   title.innerText = movie.title;
@@ -34,6 +51,12 @@ function renderMovie(movie) {
       `<em>Nota</em>: <span class="badge badge-primary">${movie.vote_average}</span>`
     )
   );
+  const detailBtn = createBtnLink(
+    "Mais Detalhes",
+    `https://www.themoviedb.org/movie/${movie.id}?language=pt-BR`
+  );
+  detailBtn.classList.add("detail_btn");
+  filme.append(detailBtn);
   return filme;
 }
 

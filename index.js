@@ -36,3 +36,10 @@ function getMovies(conf = defaultConfig) {
     .then(res => res.json())
     .then(onResponse);
 }
+
+function getGenres() {
+  return fetch(
+    `https://api.themoviedb.org/3/genre/movie/list?api_key=dba81583a54edf2ec798b59bc39cc8d9&language=pt-BR`,
+    { method: "GET" }
+  ).then(res => res.json());
+}
