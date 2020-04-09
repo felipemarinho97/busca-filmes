@@ -25,7 +25,13 @@ function createBtnLink(name, href) {
   return link;
 }
 
-// https://www.themoviedb.org/movie/
+function renderGenre(id) {
+  const span = document.createElement("span");
+  span.classList.add("badge", "badge-primary");
+  span.innerText = numToGenre(id);
+
+  return span;
+}
 
 function renderMovie(movie) {
   const filme = document.createElement("div");
@@ -44,11 +50,19 @@ function renderMovie(movie) {
         movie.poster_path}`
     )
   );
-  filme.append(createP(movie.original_title));
+  filme.append(createP(`Título original: ${movie.original_title}`));
+  filme.append(
+    createP(
+      `<b>Gênero:</b> ${movie.genre_ids
+        .map(numToGenre)
+        .map(e => `<em>${e}</em>`)
+        .join(", ")}`
+    )
+  );
   filme.append(createP(movie.overview));
   filme.append(
     createP(
-      `<em>Nota</em>: <span class="badge badge-primary">${movie.vote_average}</span>`
+      `<em>Nota</em>: <span class="badge badge-primary nota">${movie.vote_average}</span>`
     )
   );
   const detailBtn = createBtnLink(
@@ -85,4 +99,11 @@ const onSearch = e => {
 
 document.getElementById("search_options").addEventListener("submit", onSearch);
 
-onSearch({});
+getGenres().then(res => {
+  window.genres = res.genres;
+  onSearch({});
+});
+
+function numToGenre(num) {
+  return window.genres.filter(gen => gen.id == num)[0].name;
+}
